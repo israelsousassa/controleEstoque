@@ -1,19 +1,36 @@
-@extends('layouts.principal')
+@extends('layouts.app')
 
-@section('conteudo')
+@section('content')
 
-<h1>Detalhes do produto: {{$p->nome}}</h1>
+<div class="container">
+<table class="table  table-hover text-center table-borderless table-success rounded">
+    <tr>
+        <th>#</th>
+        <th>Produto</th>
+        <th>Marca</th>
+        <th>Medida</th>
+        <th>Descrição</th>
+        <th>Qtde unidade (cx)</th>
+        <th>Valor custo</th>
+        <th>Qtde (cx)</th>
+        <th>Qtde (un)</th>
+        <th>Código de barra (un)</th>
+        <th>Código de barra (cx)</th>
+    </tr>
+    <tr class="{{$p->qtdeun <= 10 ? 'table-danger' : '' }}">
+        <td>{{ $p->id }}</td>
+        <td>{{ $p->nome }}</td>
+        <td>{{ $p->marca }}</td>
+        <td>{{ $p->medida }}</td>
+        <td>{{ $p->descricao}}</td>
+        <td>{{ $p->uncaixa }}</td>
+        <td>{{ $p->valcusto}}</td>
+        <td>{{ $p->qtdecx }}</td>
+        <td>{{ $p->qtdeun }}</td>
+        <td>{{ $p->codebarra }}</td>
+        <td>{{ $p->codebarracx }}</td>
+    </tr>
+</table>
+</div>
 
-    <ul>
-        <li>
-            <b>Valor:</b> R$ {{$p->valor}}
-        </li>
-        <li>
-            <b>Descrição:</b> {{$p->descricao}}
-        </li>
-        <li>
-            <b>Quantidade:</b> {{$p->quantidade}}
-        </li>
-    </ul>
-
-    @stop
+@stop

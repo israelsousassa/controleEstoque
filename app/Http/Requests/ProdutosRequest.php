@@ -24,10 +24,11 @@ class ProdutosRequest extends FormRequest
     public function rules()
     {
         return [
-                'nome' => 'required|min:5',
-                'descricao' => 'required|max:255',
-                'valor' => 'required|numeric',
-                'quantidade' => 'required|numeric'
+                #'nome' => 'required|min:5',
+               # 'descricao' => 'required|max:255',
+               # 'valor' => 'required|numeric',
+                #'quantidade' => 'required|numeric',
+                #'codigo' => 'required|numeric'
         ];
     }
 

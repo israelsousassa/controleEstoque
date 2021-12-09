@@ -1,35 +1,24 @@
-nav.navbar.navbar-default{
-    /*background-color: #337ab7;
-    border-color: #2e6da4;*/
-    margin-top: 10px;
-    margin-bottom: 20px;    
-}
-
-nav.navbar.navbar-default a {
-    color: white;
-}
-
 h1{
     padding: 10px;
 }
 
-/*
-li p.navbar-text, a.navbar-brand {
-    color;
-    font-weight: bolder;
-}
-*/
-footer.footer {
-    background-color: #337ab7;
-    border-color: #2e6da4;
-    margin:55px 10px 0px 10px;
-    color: white;
-    border-radius: 5px;
+@font-face {
+    font-family: Aleo;
+    src: url('/fonts/Aleo-LightItalic.ttf');
 }
 
-footer.footer p {
-    padding: 10px;
+.logo{
+    font-family: 'Aleo', serif;
 }
+.box{
+    border: 1px solid transparent;
+    border-radius: 25px;
+    width: 10px;
+    height: 25px;
+
+}
+
+
 .produtos{
     margin: 10px auto;
     padding: 40px !important;
@@ -40,9 +29,66 @@ footer.footer p {
 .space{
     margin-left: 30px;
 }
+.space-footer{
+    margin-bottom: 120px;
+}
+.space-row{
+    margin: 40px;
+}
+.add{
+    font-size: 18px;
+    margin: 13px;
+    padding: 5px;
+    
+    
+}
+.novo{
+    margin-bottom: 30px;
+    font-size: 20px;
+}
+.icon-lista{
+    margin-top: 40px;
+    margin-bottom: -4px;
+}
+.icon-logo{
+    font-size: 22px;
+    margin-left: 20px;
+    margin-bottom: -10px;
+}
+.icon-item{
+    margin-top: 30px;
+    margin-bottom: -2px;
+    
+}
+.icon-add{
+    margin-bottom: -3px;
+    color: rgba(0, 0, 0, 0.74) !important;
+    
+}
+.icon-form {
+    margin-bottom: -3px;
+    color: rgba(241, 28, 28, 0.733) !important;
+
+}
+.icon-add-for{
+    margin-bottom: -2px;
+    color: white !important;
+    
+}
+.icon-modal{
+    font-size: 18px;
+    margin-bottom: -2px;
+    color: rgba(0, 0, 0, 0.74) !important;
+}
 .icon{
-    margin-top: 10px;
+    margin-top: 7px;
+    font-size: 20px;
 }
 ion-icon {
-  color: #6c757d;
+  color: #6c757dc5 !important;
+}
+
+
+.footer {
+    margin-bottom: 20px;
 }
