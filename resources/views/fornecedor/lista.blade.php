@@ -31,7 +31,7 @@
                 
                 <label>Nome</label>
                 <ion-icon src="/icones/alert-circle-sharp.svg" class="icon-form" size="small"></ion-icon>
-                <input type="text" class="form-control" name="fornecedor" pattern="[A-Za-z]{1,20}" required >
+                <input type="text" class="form-control" name="nome" pattern="[A-Za-z]{1,20}" required >
                 <small class="form-text text-muted">Insira o nome do fornecedor/distribuidor.</small>
                 <label>Telefone</label>
                 <input type="tel" class="form-control" name="telefone"  required >
@@ -58,32 +58,31 @@
         Fornecedores
     </h4><br>
 
-    <?php
-        $sql = DB::select('SELECT id_fornecedor,nome,telefone,email,endereco FROM tb_fornecedor');
-        $decode = json_decode(json_encode($sql),true);
-        if(empty($decode)){
-            echo '<div class="alert alert-secondary text-center" role="alert">';
-                echo '<h5>Lista sem <b>fornecedores</b>!</h5>';
-            echo '</div>';
-        }else{
-            echo "<table class='table table-hover text-center table-borderless table-active rounded'>";
-                echo "<tr>";
-                echo "<th>Nome</th>";
-                echo "<th>Telefone</th>";
-                echo "<th>Email</th>";
-                echo "<th>Endereço</th>";
-                echo "</tr>";
-            foreach ($decode as $value) {
-               echo "<tr>";
-                    echo "<th>". $value['nome'] ."</th>";
-                    echo "<th>". $value['telefone'] ."</th>";
-                    echo "<th>". $value['email'] ."</th>";
-                    echo "<th>". $value['endereco'] ."</th>";
-               echo "</tr>";
-            }
-             echo "</table>";
-        }
-    ?>
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Telefone</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Endereço</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($fornecedor as $f)
+          <tr>
+            <td >{{ $f->nome }}</td>
+            <td>{{ $f->telefone }}</td>
+            <td>{{ $f->email }}</td>
+            <td>{{ $f->endereco }}</td>
+          </tr>
+        @endforeach
+      </tbody>
+  </table>
+
+    
+  
+
+   
 </div>
 
     @stop

@@ -31,25 +31,16 @@
 
         <label>Fornecedor</label>
         <select class="form-control" id="exampleFormControlSelect1" name='fornecedor'>
-          <option selected>Selecione o fornecedor</option>
-          <?php 
-            $sql = DB::select('select nome from tb_fornecedor');
-            $decode = json_decode(json_encode($sql),true);
-
-            foreach ($decode as $row) {
-              echo "<option>";
-              foreach ($row as $value) {
-                echo $value;
-              }
-              echo "</option>";
-            }
-          ?>
+            <option selected>Selecione o fornecedor</option>
+          @foreach ($fornecedor as $f)
+            <option>{{ $f->nome }}</option>
+          @endforeach
         </select>
         
         <label>Produto </label>
           <ion-icon src="/icones/alert-circle-sharp.svg" class="icon-form" size="small"></ion-icon>
         <select class="form-control"  name='nome' value="{{ old('nome') }}" tabindex="1"  required >
-          <!--<option selected>Selecione o produto</option>-->
+          
           <option selected>Cerveja</option>
           <option>Chope</option>
           <option>Bebidas mistas</option>
@@ -64,9 +55,6 @@
           
           
         </select>
-        <!--<label>Nome do produto</label>
-        <input type="text" class="form-control" name="nome" value="{{ old('nome') }}" tabindex="1"  required >
-        <small class="form-text text-muted">Informe o nome do produto.</small>-->
     
         <label>Marca</label>
         <ion-icon src="/icones/alert-circle-sharp.svg" class="icon-form" size="small"></ion-icon>

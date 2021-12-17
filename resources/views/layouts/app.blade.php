@@ -78,40 +78,46 @@
                                 
                             @endif
                         @else
-                        
-
                             <div class="icon">
                                 <ion-icon src = "/icones/list-circle-sharp.svg"></ion-icon>
                                
                             </div>
-                            <li class="nav-item">
-                                <a href="{{ action('ProdutoController@lista') }}" class="nav-link" accesskey="d">Listas</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                                Listas
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ action('ProdutoController@lista') }}">Produtos</a>
+                                <a class="dropdown-item" href="{{ action('EntradaController@listaInput') }}">Entrada produto</a>
+                                <a class="dropdown-item" href="{{ action('SaidaController@listaOut') }}">Saída produto</a>
+                                </div>
                             </li>
+
                             <div class="icon">
                                 <ion-icon src = "/icones/add-circle-sharp.svg"></ion-icon>
                             </div>
                         
                             <li class="nav-item">
-                                <a href="{{ action('ProdutoController@listaEntrada') }}" class="nav-link" accesskey="e">Entrada</a>
+                                <a href="{{ action('ProdutoController@listaEntrada') }}" class="nav-link">Entrada</a>
                             </li>
                             <div class="icon">
                                 <ion-icon src = "/icones/remove-circle-sharp.svg"></ion-icon>
                             </div>
                             <li class="nav-item">
-                                <a href="{{ action('ProdutoController@listaSaida') }}" class="nav-link" accesskey="s">Saída</a>
+                                <a href="{{ action('ProdutoController@listaSaida') }}" class="nav-link">Saída</a>
                             </li>
                             <div class="icon">
                                 <ion-icon src = "/icones/list-circle-sharp.svg"></ion-icon>
                                
                             </div>
                             <li class="nav-item">
-                                <a href="{{ action('ProdutoController@fornecedor') }}" class="nav-link" accesskey="d">Fornecedor</a>
+                                <a href="{{ action('FornecedorController@fornecedor') }}" class="nav-link">Fornecedor</a>
                             </li>
                             <div class="icon">
                                 <ion-icon src = "/icones/cube-sharp.svg"></ion-icon>
                             </div>
                             <li class="nav-item">
-                                <a href="{{ action('ProdutoController@registra') }}" class="nav-link" accesskey="a">Cadastrar</a>
+                                <a href="{{ action('ProdutoController@registra') }}" class="nav-link" >Cadastrar</a>
                             </li>
 
                             <div class="space"></div>
@@ -128,6 +134,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

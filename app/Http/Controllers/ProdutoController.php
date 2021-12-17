@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Produto;
+use App\Entrada;
+use App\Saida;
+use App\Fornecedor;
 use Request;
 use App\Http\Requests\ProdutosRequest;
 use Illuminate\Support\Facades\DB;
@@ -23,54 +25,115 @@ class ProdutoController extends Controller
             'listaJson'
             ]
         ]);
+
     }
+    
     public function lista()
     {
         $produtos = Produto::all();
-        return view('produto.listagem')->with('produtos',$produtos);
+        if(view()->exists('produto.listagem')) {
+            return view('produto.listagem')->with('produtos',$produtos);
+        }
     }
+
     public function listaEntrada()
     {
-        $produtos = Produto::all();
-        return view('produto.entrada')->with('produtos',$produtos);
+        if(view()->exists('produto.entrada')) {
+            return view('produto.entrada');
+        }
+        
     }
-    
 
     public function mostra($id)
     {
         $produto = Produto::find($id);
-        
-        return view('produto.detalhes')->with('p', $produto);
+        if(view()->exists('produto.detalhes')) {
+            return view('produto.detalhes')->with('p', $produto);
+        }
 
     }
 
     public function entradaProduto(ProdutosRequest $request)
     {   
-            $qtdeun = $request->input('qtdeun');
-            $code = $request->input('code');
-            $codecx =  DB::select('SELECT codebarracx FROM tb_produtos WHERE codebarracx=?',[$code]);
-            $sql = DB::select('SELECT * FROM tb_produtos WHERE codebarra =? OR codebarracx=?',[$code,$code]);
-            $decode = json_decode(json_encode($sql),true);
-            if(empty($sql)){
-                return view('produto.vazio');
-            }else{  
-                    if($qtdeun <= 0){
-                        return view("produto.erro");
-                    }           
-                    elseif(empty($codecx)){ 
-                        $sum = $qtdeun + $decode[0]['qtdeun'];
-                        $div = $sum / $decode[0]['uncaixa'];
-                        $x = (int) $div;
-                        DB::update('UPDATE tb_produtos SET qtdeun =?, qtdecx=? WHERE codebarra=?',[$sum,$x,$code]);
+            $qtdeun = $request->qtdeun;
+            $code =  $request->code;
+            $codecx = Produto::where('codebarracx',$code)
+                               ->value('codebarracx');
 
-                    }else{
-                        $qtde = $decode[0]['qtdecx'] + $qtdeun;
-                        $result = $decode[0]['qtdeun'] + ($decode[0]['uncaixa'] * $qtdeun);
-                        DB::update('UPDATE tb_produtos SET qtdeun=?, qtdecx =? WHERE codebarracx=?',[$result,$qtde,$code]);
-                    }
-                    
-                    return redirect()->action('ProdutoController@listaEntrada')->withInput(Request::only('qtdeun','code'));
-            }    
+            $produto = DB::select(
+                'SELECT * FROM tb_produtos 
+                          WHERE codebarra = ? 
+                             OR codebarracx = ?',[
+                                $code,$code
+                            ]);
+
+            if(empty($produto)) {
+                return view('produto.vazio');
+            }else{
+
+                if($qtdeun <= 0) {
+                    return view('produto.vazio');
+                }elseif(empty($codecx)){
+                    $sum = $qtdeun + $produto[0]->qtdeun;
+                    $div = $sum / $produto[0]->uncaixa;
+                    $int = (int) $div;
+
+                    DB::update('UPDATE tb_produtos 
+                                   SET qtdeun = ?, qtdecx = ? 
+                                   WHERE codebarra = ?',[
+                                    $sum,$int,$code
+                                ]);
+
+                    $e = new Entrada();
+                    $e->nome = $produto[0]->nome;
+                    $e->marca = $produto[0]->marca;
+                    $e->medida = $produto[0]->medida;
+                    $e->qtde = $qtdeun;
+                    $e->save();
+
+                    $out = [
+                        'nome' => $produto[0]->nome,
+                        'marca' => $produto[0]->marca,
+                        'medida' => $produto[0]->medida,
+                        'qtdeun' => $qtdeun,
+                        'unorcx' => 'unidade(s)'
+                    ];
+
+                    return view('produto.entrada')->with('produto',$out);
+
+                }else{
+                    $mult = $produto[0]->uncaixa * $qtdeun;
+                    $qtde = $produto[0]->qtdecx + $qtdeun;
+                    $result = $produto[0]->qtdeun + $mult;
+
+                    DB::update('UPDATE tb_produtos 
+                            SET qtdeun = ?, qtdecx = ? 
+                            WHERE codebarracx = ?',[
+                                $result,$qtde,$code
+                            ]);
+
+                    $e = new Entrada();
+                    $e->nome = $produto[0]->nome;
+                    $e->marca = $produto[0]->marca;
+                    $e->medida = $produto[0]->medida;
+                    $e->qtde = $mult;
+                    $e->save();
+
+                    $out = [
+                        'nome' => $produto[0]->nome,
+                        'marca' => $produto[0]->marca,
+                        'medida' => $produto[0]->medida,
+                        'qtdeun' => $qtdeun,
+                        'mult' => $mult,
+                        'unorcx' => 'caixa(s)'
+                    ];
+
+                    return view('produto.entrada')->with('produto',$out);
+
+                }
+                
+            }     
+            
     }
        
     public function listaSaida()
@@ -80,16 +143,21 @@ class ProdutoController extends Controller
 
     public function saidaProduto(ProdutosRequest $request)
     {
-        $qtdeun = $request->input('qtdeun');
-        $code = $request->input('code');
-        $sql = DB::select('SELECT * FROM tb_produtos WHERE codebarra =? OR codebarracx=?',[$code,$code]);
-        $decode = json_decode(json_encode($sql),true);
-        $dbcodecx = $decode[0]['codebarracx'];
-        $dbqtdeun = $decode[0]['qtdeun'];
-        $dbuncx = $decode[0]['uncaixa'];
-        $dbqtdecx = $decode[0]['qtdecx'];
+        $qtdeun = $request->qtdeun;
+        $code = $request->code;
+        $produto = DB::select(
+            'SELECT * FROM tb_produtos 
+                      WHERE codebarra =? 
+                      OR codebarracx=?',[
+                          $code,$code
+                        ]);
+       
+        $dbcodecx = $produto[0]->codebarracx;
+        $dbqtdeun = $produto[0]->qtdeun;
+        $dbuncx = $produto[0]->uncaixa;
+        $dbqtdecx = $produto[0]->qtdecx;
 
-        if(empty($sql)){
+        if(empty($produto)){
             return view('produto.vazio');
         }else{
             $sub = $dbqtdeun - $qtdeun;
@@ -103,7 +171,30 @@ class ProdutoController extends Controller
             }elseif($code != $dbcodecx || empty($dbcodecx)){
                 $w = $sub / $dbuncx;
                 $y = (int) $w;
-                DB::update('UPDATE tb_produtos SET qtdeun =?, qtdecx=? WHERE codebarra=?',[$sub,$y,$code]);
+
+                DB::update('UPDATE tb_produtos 
+                               SET qtdeun =?, qtdecx=? 
+                               WHERE codebarra=?',[
+                                   $sub,$y,$code
+                                ]);
+
+                $e = new Saida();
+                $e->nome = $produto[0]->nome;
+                $e->marca = $produto[0]->marca;
+                $e->medida = $produto[0]->medida;
+                $e->qtde = $qtdeun;
+                $e->save();
+
+                $out = [
+                        'nome' => $produto[0]->nome,
+                        'marca' => $produto[0]->marca,
+                        'medida' => $produto[0]->medida,
+                        'qtdeun' => $qtdeun,
+                        'unorcx' => 'unidade(s)'
+                    ];
+
+                    return view('produto.saida')->with('produto',$out);
+                
             }else{
                 if($x > $dbqtdeun){
                     return view('produto.empty');
@@ -113,136 +204,115 @@ class ProdutoController extends Controller
                     $qtde = $dbqtdecx - $qtdeun;
                 }
                 $result = $dbqtdeun - $x;
-                DB::update('UPDATE tb_produtos SET qtdeun=?, qtdecx =? WHERE codebarracx=?',[$result,$qtde,$code]);
+                
+                DB::update('UPDATE tb_produtos 
+                               SET qtdeun=?, qtdecx =? 
+                             WHERE codebarracx=?',[
+                                 $result,$qtde,$code
+                                ]);
+                $e = new Entrada();
+                $e->nome = $produto[0]->nome;
+                $e->marca = $produto[0]->marca;
+                $e->medida = $produto[0]->medida;
+                $e->qtde = $mult;
+                $e->save();
+
+                $out = [
+                    'nome' => $produto[0]->nome,
+                    'marca' => $produto[0]->marca,
+                    'medida' => $produto[0]->medida,
+                    'qtdeun' => $qtdeun,
+                    'mult' => $mult,
+                    'unorcx' => 'caixa(s)'
+                ];
+
+                    return view('produto.saida')->with('produto',$out);
+
             }
            
-            return redirect()->action('ProdutoController@listaSaida')
-            ->withInput(Request::only('qtdeun','code'));
         }
 
     }
 
     public function registra()
-    {
-        return view('produto.cadastro');
-    }
-
-    public function fornecedor()
-    {
-        return view('produto.listafornecedor');
-    }
-
-    public function adicionaFornecedor(ProdutosRequest $request) 
-    {
-        $fornecedor = $request->input('fornecedor');
-        $telefone = $request->input('telefone');
-        $email = $request->input('email');
-        $endereco = $request->input('endereco');
-
-        DB::insert('INSERT INTO tb_fornecedor(
-            nome,telefone,email,endereco
-            )value(?,?,?,?)',[
-                $fornecedor,$telefone,$email,$endereco
-            ]);
-
-            return redirect()->action('ProdutoController@registra');
-        /*->withInput(Request::only('nome','marca', 'medida'));*/
+    {   
+        $fornecedor = Fornecedor::all();
+        if(view()->exists('produto.cadastro')) {
+            return view('produto.cadastro')->with('fornecedor',$fornecedor);
+        }
     }
 
     public function adiciona(ProdutosRequest $request)
     {   
-        $fornecedor = $request->input('fornecedor');
-        if($fornecedor == "Selecione o fornecedor"){
-            $fornecedor = " ";
-        }
-        $nome = $request->input('nome');
-        $marca = $request->input('marca');
-        $medida = $request->input('medida');
-        $descricao = $request->input('descricao');
-        $valcusto = $request->input('valcusto');
-        $uncaixa = $request->input('uncaixa');
-        $codebarra = $request->input('codebarra');
-        $codebarracx = $request->input('codebarracx');
 
-        $sql = DB::select('SELECT id_fornecedor FROM tb_fornecedor WHERE nome = ?',[$fornecedor]);
-        $decode = json_decode(json_encode($sql),true);
-        if(empty($sql)){
-            $fornecedor = null;
+        if($request->fornecedor == "Selecione o fornecedor"){
+            $fornecedor = NULL;
         }else{
-            $fornecedor = $decode[0]['id_fornecedor'];
+            $id = Fornecedor::where('nome',$request->fornecedor)
+                           ->value('id');
+            $fornecedor = $id;
         }
         
-        $select = DB::select('SELECT codebarra,codebarracx FROM tb_produtos');
-        $deco = json_decode(json_encode($select),true);
-        
-        if(empty($select)){
-            if($codebarra == $codebarracx){
-                return view('produto.code');
-            }
-            DB::insert('INSERT INTO tb_produtos(
-            nome, marca, medida, descricao, valcusto, uncaixa, codebarra, codebarracx, fornecedor
-            ) values(?,?,?,?,?,?,?,?,?)',[
-            $nome, $marca, $medida, $descricao, $valcusto, $uncaixa, $codebarra, $codebarracx,$fornecedor
-            ]);
-        }else{
-            $codeun = $deco[0]['codebarra'];
-            $codecx = $deco[0]['codebarracx'];
+        $produto = DB::select('SELECT codebarra, codebarracx 
+                                 FROM tb_produtos'); 
 
-            if($codeun == $codebarra || $codecx == $codebarracx || 
-                $codecx == $codebarra || $codeun == $codebarracx ||
-                $codebarra == $codebarracx){
+            if($request->codebarra == $request->codebarracx) {
+
                 return view('produto.code');
+
+            }elseif(!empty($produto)) {
+                    
+                    $codeun = $produto[0]->codebarra;
+                    $codecx = $produto[0]->codebarracx;
+                        
+                    if($codeun == $request->codebarra || $codecx == $request->codebarracx || 
+                        $codecx == $request->codebarra || $codeun == $request->codebarracx)
+                    {        
+                        return view('produto.code');
+                    }
             }
-            DB::insert('INSERT INTO tb_produtos(
-            nome, marca, medida, descricao, valcusto, uncaixa, codebarra, codebarracx, fornecedor
-            ) values(?,?,?,?,?,?,?,?,?)',[
-            $nome, $marca, $medida, $descricao, $valcusto, $uncaixa, $codebarra, $codebarracx,$fornecedor
-            ]);
-        } 
+            
+        $p = new Produto();
+        $p->nome = $request->nome;
+        $p->marca = $request->marca;
+        $p->medida = $request->medida;
+        $p->descricao = $request->descricao;
+        $p->valcusto = $request->valcusto;
+        $p->uncaixa = $request->uncaixa;
+        $p->codebarra = $request->codebarra;
+        $p->codebarracx = $request->codebarracx;
+        $p->fornecedor = $fornecedor;
+        $p->save();
+        
         return redirect()->action('ProdutoController@registra')
-        ->withInput(Request::only('nome','marca', 'medida'));
+                         ->withInput(Request::only('nome','marca', 'medida'));
+
     }
 
-
-    public function listaJson()
-    {
-        $produto = Produto::all();
-        return response()->json($produto);
-    }
 
     public function remove($id)
     {
         $produto = Produto::find($id);
         $produto->delete();
-
         return redirect()->action('ProdutoController@lista');
     }
     
     public function altera($id)
     {
         $produto = Produto::find($id);
-        return view('produto.alterado')->with('p',$produto);
+        if(view()->exists('produto.alterado')){
+            return view('produto.alterado')->with('p',$produto);
+        }
     }
 
     public function update(ProdutosRequest $request) {
-        $id = $request->input('id');
-        $produto = $request->input('nome');
-        $marca = $request->input('marca');
-        $medida = $request->input('medida');
-        $sql = DB::select('SELECT * FROM tb_produtos WHERE id = ?',[$id]);
-        
-        if (!empty($sql)) {
+        $id = $request->id;
+        $produtos = Produto::find($id);
+        $sql = Produto::where('id',$id)->get();
 
-            DB::update('UPDATE tb_produtos 
-                        SET nome = ?, 
-                        marca = ?, 
-                        medida = ? 
-                        WHERE id = ?',
-                        [$produto,$marca,$medida,$id]);
-                        
-                        return view('produto.atualizado');
-                        
-            
+        if(!empty($sql)){
+            $produtos->fill($request->input())->save();
+            return view('produto.atualizado');
         }
     }
 

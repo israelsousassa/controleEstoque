@@ -17,9 +17,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/produtos','ProdutoController@lista');
 
 Route::get('/produtos/mostra/{id}','ProdutoController@mostra')
--> where('id', '[0-9]+');
-
-//Route::get('/produtos/novo','ProdutoController@novo');
+->where('id', '[0-9]+');
 
 Route::post('/produtos/inseri','ProdutoController@entradaProduto');
 
@@ -33,23 +31,20 @@ Route::post('/produtos/adiciona','ProdutoController@adiciona');
 
 Route::get('/produtos/saida','ProdutoController@listaSaida');
 
-Route::post('/produtos/adiciona/fornecedor','ProdutoController@adicionaFornecedor');
+Route::get('/produtos/remove/{id}','ProdutoController@remove')
+->where('id', '[0-9]+');
 
-Route::get('/produtos/json','ProdutoController@listaJson');
-
-Route::get('/produtos/remove/{id_produto}','ProdutoController@remove');
-
-Route::get('/produtos/altera/{id_produto}','ProdutoController@altera');
+Route::get('/produtos/altera/{id}','ProdutoController@altera')
+->where('id', '[0-9]+');
 
 Route::post('/produtos/update','ProdutoController@update');
 
-Route::get('/produtos/fornecedor','ProdutoController@fornecedor');
-
 Route::get('/','ProdutoController@sair');
 
-Route::get('/code', function(){
+Route::get('/produto/lista/entrada', 'EntradaController@listaInput');
+Route::get('/produto/lista/saida', 'SaidaController@listaOut');
 
-
-});
+Route::get('/produtos/fornecedor','FornecedorController@fornecedor');
+Route::post('/produtos/adiciona/fornecedor','FornecedorController@addFornecedor');
 
 

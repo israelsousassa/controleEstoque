@@ -4,67 +4,16 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-8">
-                    @if(old('code'))
-                         <?php
-                                $codecx =  DB::select('SELECT codebarracx FROM tb_produtos WHERE codebarracx=?',[old('code')]);
-                                $sql = DB::select('SELECT * FROM tb_produtos WHERE codebarra = ? OR codebarracx = ?',
-                                [old('code'),old('code')]);
-                                $decode = json_decode(json_encode($sql),true);
-                                if(empty($codecx)){
 
-                                    $insert = DB::insert('INSERT INTO tb_entrada(
-                                    nome,
-                                    marca,
-                                    medida,
-                                    qtde
-                                    ) values(?,?,?,?)',
-                                [
-                                    $decode[0]['nome'],
-                                    $decode[0]['marca'],
-                                    $decode[0]['medida'],
-                                    old('qtdeun')
-                                ]);
-                                    
-                                    echo '<div class="alert alert-success info text-center">';
-                                    
-                                    echo  old('qtdeun') . ' ' . $decode[0]['nome'] . ' ' . $decode[0]['marca'] 
-                                    . ' ' . $decode[0]['medida'] . ' foi <b>adicionado(a)</b>!';
-
-                                    echo '</div>';
-                                    
-                                }else{
-                                    $result = old('qtdeun') * $decode[0]['uncaixa']; 
-                                    $insert = DB::insert('INSERT INTO tb_entrada(
-                                        nome,
-                                        marca,
-                                        medida,
-                                        qtde
-                                        ) values(?,?,?,?)',
-                                    [
-                                        $decode[0]['nome'],
-                                        $decode[0]['marca'],
-                                        $decode[0]['medida'],
-                                        $result
-                                    ]);
-                                    $result = $decode[0]['uncaixa'] * old('qtdeun');
-
-                                    echo  '<div class="alert alert-success info text-center">';
-                                    
-                                    echo  old('qtdeun') . ' ' . 'caixa de ' . $decode[0]['nome'] . ' ' . $decode[0]['marca'] 
-                                    . ' ' . $decode[0]['medida'] . ' com ' . $result .' unidades foi <b>adicionado(a)</b>!';
-
-                                    echo '</div>';
-                                    
-
-                                }
-                            ?>
-                    @endif
-                  
-                    
-                    <?php
-                        
-                       
-                    ?> 
+            @if(!empty($produto))     
+                <div class="alert alert-success info text-center">  
+                   <p> 
+                       {{ $produto['qtdeun'] }} {{ $produto['unorcx'] }} {{ $produto['nome'] }} {{ $produto['marca'] }} {{ $produto['medida'] }} 
+                       foi <b> adicionado(a)</b>!
+                   </p>
+                </div>
+            @endif
+      
         </div>
         <div class="col-sm-4">
             <div class="card">
@@ -75,17 +24,15 @@
                             <ion-icon src="/icones/add-circle-outline.svg" class="icon-add"></ion-icon> Entrada
                     </div>
                     <label>Qtde</label>
-                    <input type="number" class="form-control" name="qtdeun" value="1" tabindex="3" accesskey="x">
+                    <input type="number" class="form-control" name="qtdeun" value="1{{ old('qtdeun') }}" >
                     <label>Código de barra</label>
-                    <input type="text" class="form-control" name="code" value="" autofocus tabindex="4"   accesskey="c" required ><br>
-                    <button type="submit" class="btn btn-success btn-block" tabindex="5">Adicionar</button><br>
+                    <input type="text" class="form-control" name="code" autofocus required ><br>
+                    <button type="submit" class="btn btn-success btn-block">Adicionar</button><br>
                     </form>
                 </div>
             </div>
         </div>
     </div>  
-          
-               
 </div>
 
 
