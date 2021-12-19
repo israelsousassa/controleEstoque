@@ -15,11 +15,11 @@ class EntradaController extends Controller
         if(!empty($select)) {
 
             $entrada = DB::select('SELECT nome,medida,marca, 
-                                count(marca) as num_venda, 
-                                sum(qtde) as qtde_venda 
+                                count(marca) as num_estoque, 
+                                sum(qtde) as qtde_produto 
                                 from tb_entrada 
                                 group by nome,medida,marca 
-                                order by qtde_venda 
+                                order by qtde_produto 
                                 desc',[
                                     $select[0]->nome, $select[0]->marca
                                 ]);
@@ -27,6 +27,8 @@ class EntradaController extends Controller
             if(view()->exists('entrada.input')) {
                 return view('entrada.input')->with('entrada',$entrada);
             }
+        }else{
+            return view('entrada.empty');
         }
     }
 }

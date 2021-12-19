@@ -151,15 +151,14 @@ class ProdutoController extends Controller
                       OR codebarracx=?',[
                           $code,$code
                         ]);
-       
-        $dbcodecx = $produto[0]->codebarracx;
-        $dbqtdeun = $produto[0]->qtdeun;
-        $dbuncx = $produto[0]->uncaixa;
-        $dbqtdecx = $produto[0]->qtdecx;
 
         if(empty($produto)){
             return view('produto.vazio');
         }else{
+            $dbcodecx = $produto[0]->codebarracx;
+            $dbqtdeun = $produto[0]->qtdeun;
+            $dbuncx = $produto[0]->uncaixa;
+            $dbqtdecx = $produto[0]->qtdecx;
             $sub = $dbqtdeun - $qtdeun;
             $mult = $dbuncx * $dbqtdecx;
             $x = $dbuncx * $qtdeun;

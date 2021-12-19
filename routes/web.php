@@ -47,4 +47,7 @@ Route::get('/produto/lista/saida', 'SaidaController@listaOut');
 Route::get('/produtos/fornecedor','FornecedorController@fornecedor');
 Route::post('/produtos/adiciona/fornecedor','FornecedorController@addFornecedor');
 
-
+Route::get('/produtos/fornecedor/remover/{id}', 'FornecedorController@remover')
+->where('id', '[0-9]+');
+Route::get('/produtos/fornecedor/alterar/{id}', 'FornecedorController@alterar');
+Route::post('/produto/fornecedor/update','FornecedorController@update');

@@ -20,13 +20,13 @@
 
         <label>Marca</label>
         <input type="text" class="form-control" name="marca" value="{{ $p->marca }}"
-         tabindex="2" required>
+         required>
   
         <label>Medida</label>
         <input type="text" class="form-control" name="medida" value="{{ $p->medida }}"
-         tabindex="3"><br>
+        ><br>
         
-        <button type="submit" class="btn btn-success btn-block"  tabindex="9">Atualizar</button>
+        <button type="submit" class="btn btn-success btn-block" >Atualizar</button>
     </div>
     
 </form>

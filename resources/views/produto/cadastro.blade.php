@@ -39,7 +39,7 @@
         
         <label>Produto </label>
           <ion-icon src="/icones/alert-circle-sharp.svg" class="icon-form" size="small"></ion-icon>
-        <select class="form-control"  name='nome' value="{{ old('nome') }}" tabindex="1"  required >
+        <select class="form-control"  name='nome' value="{{ old('nome') }}" required >
           
           <option selected>Cerveja</option>
           <option>Chope</option>
@@ -58,8 +58,8 @@
     
         <label>Marca</label>
         <ion-icon src="/icones/alert-circle-sharp.svg" class="icon-form" size="small"></ion-icon>
-        <input type="text" class="form-control" name="marca" value="{{ old('marca') }}"
-         tabindex="2" required>
+        <input type="text" class="form-control" name="marca" value="{{ old('marca') }}" pattern="[A-Za-z]{3,15}"
+         required>
         <small class="form-text text-muted">Informe a marca do produto.</small>
 
         <label>Medida</label>
@@ -68,7 +68,8 @@
         <small class="form-text text-muted">Informe a medida de capacidade (se houver).</small>
 
         <label>Descrição</label>
-        <input type="text" class="form-control" name="descricao" value="{{ old('descricao') }}"  tabindex="4">
+        <input type="text" class="form-control" name="descricao" value="{{ old('descricao') }}"  tabindex="4" 
+        pattern="[A-Za-z0-9]{25}">
         <small class="form-text text-muted">Informe a descrição do produto.</small>
     
         <label>Preço de custo (cx)</label>

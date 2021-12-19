@@ -23,12 +23,14 @@ class SaidaController extends Controller
                                 desc',[
                                     $select[0]->nome, $select[0]->marca
                                 ]);
-        
+
             if(view()->exists('saida.out')) {
                 return view('saida.out')->with('saida',$saida);
             }
 
+        }else{
+            return view('saida.empty');
         }
-        
+  
     }
 }

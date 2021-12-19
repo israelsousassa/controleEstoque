@@ -22,10 +22,10 @@
                             <ion-icon src="/icones/remove-circle-outline.svg" class="icon-add"></ion-icon> Saída
                     </div>
                     <label>Qtde</label>
-                    <input type="number" class="form-control" name="qtdeun" value="1" tabindex="3" accesskey="x">
+                    <input type="number" class="form-control" name="qtdeun" value="1" >
                     <label>Código de barra</label>
-                    <input type="text" class="form-control" name="code" value="" autofocus tabindex="4"   accesskey="c" required ><br>
-                    <button type="submit" class="btn btn-danger btn-block" tabindex="5">Remover</button><br>
+                    <input type="number" class="form-control" name="code"  autofocus required ><br>
+                    <button type="submit" class="btn btn-danger btn-block">Remover</button><br>
                     
                     </form>
                 </div>

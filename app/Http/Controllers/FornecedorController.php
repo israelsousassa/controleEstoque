@@ -20,6 +20,32 @@ class FornecedorController extends Controller
     public function addFornecedor(Request $request) 
     {
         Fornecedor::create($request->all());
-        return redirect()->action('ProdutoController@registra');
+        return redirect()->action('FornecedorController@fornecedor');
+    }
+
+    public function remover($id)
+    {
+        $fornecedor = Fornecedor::find($id);
+        $fornecedor->delete();
+        return redirect()->action('FornecedorController@fornecedor');
+    }
+
+    public function alterar($id)
+    {
+        $forn = Fornecedor::find($id);
+        
+            return view('fornecedor.update')->with('a',$forn);    
+    }
+
+    public function update(Request $request) {
+        
+        $id= $request->id;
+        $fornecedor = Fornecedor::find($id);
+        $sql = Fornecedor::where('id',$id)->get();
+        if(!empty($sql)) {
+            $fornecedor->fill($request->input())->save();
+            return redirect()->action('FornecedorController@fornecedor');
+        }
+         
     }
 }

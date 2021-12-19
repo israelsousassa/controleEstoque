@@ -49,19 +49,19 @@
                             </div>
                         
                             <li class="nav-item">
-                                <a href="{{ action('ProdutoController@listaEntrada') }}" class="nav-link" accesskey="e">Entrada</a>
+                                <a href="{{ action('ProdutoController@listaEntrada') }}" class="nav-link" >Entrada</a>
                             </li>
                             <div class="icon">
                                 <ion-icon src = "/icones/remove-circle-sharp.svg"></ion-icon>
                             </div>
                             <li class="nav-item">
-                                <a href="{{ action('ProdutoController@listaSaida') }}" class="nav-link" accesskey="s">Saída</a>
+                                <a href="{{ action('ProdutoController@listaSaida') }}" class="nav-link" >Saída</a>
                             </li>
                             <div class="icon">
                                 <ion-icon src = "/icones/cube-sharp.svg"></ion-icon>
                             </div>
                             <li class="nav-item">
-                                <a href="{{ action('ProdutoController@registra') }}" class="nav-link" accesskey="a">Cadastrar</a>
+                                <a href="{{ action('ProdutoController@registra') }}" class="nav-link" >Cadastrar</a>
                             </li>
                             <div class="icon">
                                 <ion-icon src = "/icones/person-sharp.svg"></ion-icon>
@@ -71,9 +71,11 @@
                             </li>
                             @if (Route::has('register'))
                             
-                            <!--<li class="nav-item">
+                            <!--
+                            <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Registrar') }}</a>
-                                </li>-->
+                            </li>
+                            -->
 
                                 
                             @endif

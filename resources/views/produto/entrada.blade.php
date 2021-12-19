@@ -26,7 +26,7 @@
                     <label>Qtde</label>
                     <input type="number" class="form-control" name="qtdeun" value="1{{ old('qtdeun') }}" >
                     <label>Código de barra</label>
-                    <input type="text" class="form-control" name="code" autofocus required ><br>
+                    <input type="number" class="form-control" name="code" autofocus required ><br>
                     <button type="submit" class="btn btn-success btn-block">Adicionar</button><br>
                     </form>
                 </div>

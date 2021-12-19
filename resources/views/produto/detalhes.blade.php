@@ -2,7 +2,16 @@
 
 @section('content')
 
+
 <div class="container">
+
+        <h4>
+            <ion-icon class=" icon-lista" src = "/icones/list-outline.svg" > </ion-icon> 
+                Detalhes
+        </h4>
+
+        <div class="space-row"></div>
+
 <table class="table  table-hover text-center table-borderless table-success rounded">
     <tr>
         <th>#</th>
