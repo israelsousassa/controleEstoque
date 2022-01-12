@@ -79,6 +79,12 @@ h1{
     margin-top: 7px;
     font-size: 20px;
 }
+.return-page{
+    margin-bottom: -10px;
+}
+a{
+    color: #8c939a !important;
+}
 ion-icon {
   color: #6c757dc5 !important;
 }

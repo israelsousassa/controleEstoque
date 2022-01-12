@@ -4,7 +4,9 @@
 
 
 <div class="container">
-
+    <a href="{{ action('ProdutoController@lista') }}">
+        <ion-icon src="/icones/arrow-back-circle.svg" class="return-page" size="large"></ion-icon> Página anterior
+    </a>
         <h4>
             <ion-icon class=" icon-lista" src = "/icones/list-outline.svg" ></ion-icon> 
                 Detalhes
@@ -33,7 +35,7 @@
         <td>{{ $p->medida }}</td>
         <td>{{ $p->descricao}}</td>
         <td>{{ $p->uncaixa }}</td>
-        <td>{{ $p->valcusto}}</td>
+        <td>{{ number_format( $p->valcusto,2,",",".") }}</td>
         <td>{{ $p->qtdecx }}</td>
         <td>{{ $p->qtdeun }}</td>
         <td>{{ $p->codebarra }}</td>

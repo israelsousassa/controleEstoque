@@ -203,7 +203,8 @@ class ProdutoController extends Controller
                              WHERE codebarracx=?',[
                                  $result,$qtde,$code
                                 ]);
-                $e = new Entrada();
+
+                $e = new Saida();
                 $e->nome = $produto[0]->nome;
                 $e->marca = $produto[0]->marca;
                 $e->medida = $produto[0]->medida;
