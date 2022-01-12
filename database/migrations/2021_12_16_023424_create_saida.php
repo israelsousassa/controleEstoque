@@ -14,7 +14,6 @@ class CreateSaida extends Migration
     public function up()
     {
         \DB::statement("
-
             CREATE TABLE IF NOT EXISTS `tb_saida` (
               `id` int NOT NULL AUTO_INCREMENT,
               `nome` varchar(255) NOT NULL,

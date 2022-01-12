@@ -39,7 +39,7 @@
                 <input type="email" class="form-control" name="email">
                 <small class="form-text text-muted">Insira o e-mail do fornecedor/distribuidor.</small>
                 <label>Endereço</label>
-                <textarea class="form-control" name="endereco" pattern="[A-Za-z0-9]{1,100}"></textarea>
+                <textarea class="form-control" name="endereco" pattern="[A-Za-z0-9]{1,100}" required ></textarea>
                 <small class="form-text text-muted">Insira o endereço do fornecedor/distribuidor.</small>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Sair</button>

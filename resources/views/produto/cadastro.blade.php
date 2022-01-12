@@ -53,12 +53,11 @@
           <option>Cigarro</option>
           <option>Outro</option>
           
-          
         </select>
     
         <label>Marca</label>
         <ion-icon src="/icones/alert-circle-sharp.svg" class="icon-form" size="small"></ion-icon>
-        <input type="text" class="form-control" name="marca" value="{{ old('marca') }}" pattern="[A-Za-z]{3,15}"
+        <input type="text" class="form-control" name="marca" value="{{ old('marca') }}"
          required>
         <small class="form-text text-muted">Informe a marca do produto.</small>
 

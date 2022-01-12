@@ -11,9 +11,8 @@ class FornecedorController extends Controller
     
     public function fornecedor()
     {
-        $fornecedor = Fornecedor::all();
         if(view()->exists('fornecedor.lista')) {
-            return view('fornecedor.lista')->with('fornecedor',$fornecedor);
+            return view('fornecedor.lista')->with('fornecedor', Fornecedor::all());
         }
     }
 
@@ -25,24 +24,20 @@ class FornecedorController extends Controller
 
     public function remover($id)
     {
-        $fornecedor = Fornecedor::find($id);
-        $fornecedor->delete();
+        Fornecedor::find($id)->delete();
         return redirect()->action('FornecedorController@fornecedor');
     }
 
     public function alterar($id)
     {
-        $forn = Fornecedor::find($id);
-        
-            return view('fornecedor.update')->with('a',$forn);    
+        return view('fornecedor.update')->with('a', Fornecedor::find($id));    
     }
 
-    public function update(Request $request) {
+    public function update(Request $request, $id) {
         
-        $id= $request->id;
         $fornecedor = Fornecedor::find($id);
-        $sql = Fornecedor::where('id',$id)->get();
-        if(!empty($sql)) {
+        
+        if(!empty($fornecedor)) {
             $fornecedor->fill($request->input())->save();
             return redirect()->action('FornecedorController@fornecedor');
         }

@@ -6,7 +6,7 @@
 <div class="container">
 
         <h4>
-            <ion-icon class=" icon-lista" src = "/icones/list-outline.svg" > </ion-icon> 
+            <ion-icon class=" icon-lista" src = "/icones/list-outline.svg" ></ion-icon> 
                 Detalhes
         </h4>
 

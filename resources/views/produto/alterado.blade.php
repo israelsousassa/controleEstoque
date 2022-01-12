@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form action="/produtos/update" method="post">
+<form action="{{ action('ProdutoController@update', $p->id) }}" method="post">
     
     <input type="hidden" name="_token" value="{{{ csrf_token() }}}"/>
 
@@ -11,9 +11,6 @@
             <ion-icon src="/icones/cube.svg" class="icon-add "></ion-icon>
             Atualizar produto
         </div>
-
-        <label>ID</label>
-        <input type="text" class="form-control" name="id" value="{{ $p->id }}" readonly>
 
         <label>Produto</label>
         <input type="text" class="form-control" name="nome" value="{{ $p->nome }}">

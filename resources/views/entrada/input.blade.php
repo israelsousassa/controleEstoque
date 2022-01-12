@@ -1,9 +1,17 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        
+
+    @if(empty($entrada))
+
+    <div class="alert alert-danger" role="alert">
+        Você não possui nenhum entrada de produto.
+    </div>
+
+    @else
+
         <h4>
-            <ion-icon class=" icon-lista" src = "/icones/list-outline.svg" > </ion-icon> 
+            <ion-icon class=" icon-lista" src = "/icones/list-outline.svg"></ion-icon> 
                 Entrada de produtos
         </h4>
 
@@ -33,4 +41,5 @@
             </table>
         
     </div>
+    @endif
 @stop

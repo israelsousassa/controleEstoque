@@ -25,14 +25,12 @@ class ProdutoController extends Controller
             'listaJson'
             ]
         ]);
-
     }
     
     public function lista()
     {
-        $produtos = Produto::all();
         if(view()->exists('produto.listagem')) {
-            return view('produto.listagem')->with('produtos',$produtos);
+            return view('produto.listagem')->with('produtos', Produto::all());
         }
     }
 
@@ -46,9 +44,8 @@ class ProdutoController extends Controller
 
     public function mostra($id)
     {
-        $produto = Produto::find($id);
         if(view()->exists('produto.detalhes')) {
-            return view('produto.detalhes')->with('p', $produto);
+            return view('produto.detalhes')->with('p', Produto::find($id));
         }
 
     }
@@ -129,11 +126,8 @@ class ProdutoController extends Controller
                     ];
 
                     return view('produto.entrada')->with('produto',$out);
-
                 }
-                
-            }     
-            
+            }       
     }
        
     public function listaSaida()
@@ -235,9 +229,8 @@ class ProdutoController extends Controller
 
     public function registra()
     {   
-        $fornecedor = Fornecedor::all();
         if(view()->exists('produto.cadastro')) {
-            return view('produto.cadastro')->with('fornecedor',$fornecedor);
+            return view('produto.cadastro')->with('fornecedor', Fornecedor::all());
         }
     }
 
@@ -247,13 +240,12 @@ class ProdutoController extends Controller
         if($request->fornecedor == "Selecione o fornecedor"){
             $fornecedor = NULL;
         }else{
-            $id = Fornecedor::where('nome',$request->fornecedor)
-                           ->value('id');
+            $id = Fornecedor::where('nome',$request->fornecedor)->value('id');
             $fornecedor = $id;
         }
         
-        $produto = DB::select('SELECT codebarra, codebarracx 
-                                 FROM tb_produtos'); 
+        $produto = DB::select('SELECT codebarra, codebarracx FROM tb_produtos'); 
+
 
             if($request->codebarra == $request->codebarracx) {
 
@@ -288,34 +280,29 @@ class ProdutoController extends Controller
 
     }
 
-
     public function remove($id)
     {
-        $produto = Produto::find($id);
-        $produto->delete();
+        Produto::find($id)->delete();
         return redirect()->action('ProdutoController@lista');
     }
     
     public function altera($id)
     {
-        $produto = Produto::find($id);
         if(view()->exists('produto.alterado')){
-            return view('produto.alterado')->with('p',$produto);
+            return view('produto.alterado')->with('p', Produto::find($id));
         }
     }
 
-    public function update(ProdutosRequest $request) {
-        $id = $request->id;
+    public function update(ProdutosRequest $request, $id) 
+    {
         $produtos = Produto::find($id);
-        $sql = Produto::where('id',$id)->get();
-
-        if(!empty($sql)){
+        if(!empty($produtos)){
             $produtos->fill($request->input())->save();
             return view('produto.atualizado');
         }
     }
 
-     public function sair()
+    public function sair()
     {
         return view('Auth.login');
     }

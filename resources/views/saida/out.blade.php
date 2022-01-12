@@ -2,13 +2,16 @@
 @section('content')
 
     <div class="container">
+    @if(empty($saida))
+        <div class="alert alert-danger" role="alert">
+            Você não possui nenhum saída de produto.
+        </div>
+    @else
         <h4>
             <ion-icon class=" icon-lista" src = "/icones/list-outline.svg" > </ion-icon> 
                 Saída de produtos
         </h4>
-
         <div class="space-row"></div>
-       
             <table class="table class='table  table-hover text-center table-borderless table-active rounded'">
                 <thead>
                     <tr>
@@ -31,6 +34,6 @@
                     @endforeach
                 </tbody>
             </table>
-       
     </div>
+    @endif
 @stop
